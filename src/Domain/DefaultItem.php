@@ -11,6 +11,7 @@ use Serializable;
 use Tekfolio\Sidebar\Contracts\Builder\Append;
 use Tekfolio\Sidebar\Contracts\Builder\Badge;
 use Tekfolio\Sidebar\Contracts\Builder\Item;
+use Tekfolio\Sidebar\Presentation\ActiveStateChecker;
 use Tekfolio\Sidebar\Traits\AuthorizableTrait;
 use Tekfolio\Sidebar\Traits\CacheableTrait;
 use Tekfolio\Sidebar\Traits\CallableTrait;
@@ -37,6 +38,8 @@ class DefaultItem implements Item, Serializable
 
     protected string $iconClass = '';
 
+    protected array $iconAttributes = [];
+
     protected string $type = 'blade';
 
     protected string $toggleIconType = 'blade';
@@ -53,6 +56,8 @@ class DefaultItem implements Item, Serializable
 
     protected bool $newTab = false;
 
+    protected bool $spa = false;
+
     protected string $itemClass = '';
 
     protected string $activeClass = '';
@@ -67,6 +72,7 @@ class DefaultItem implements Item, Serializable
         'url',
         'icon',
         'type',
+        'spa',
         'toggleIcon',
         'toggleActiveIcon',
         'items',
@@ -111,11 +117,12 @@ class DefaultItem implements Item, Serializable
         return $this->icon;
     }
 
-    public function setIcon(string $icon, string $type = 'blade', string $iconClass = ''): Item
+    public function setIcon(string $icon, string $type = 'blade', string $iconClass = '', array $attributes = []): Item
     {
         $this->icon = $icon;
         $this->type = $type;
         $this->iconClass = $iconClass;
+        $this->iconAttributes = $attributes;
 
         return $this;
     }
@@ -123,6 +130,23 @@ class DefaultItem implements Item, Serializable
     public function getIconClass(): string
     {
         return $this->iconClass;
+    }
+
+    public function isActive(): bool
+    {
+        return (new ActiveStateChecker())->isActive($this);
+    }
+
+    public function useSpa(): Item
+    {
+        $this->spa = true;
+
+        return $this;
+    }
+
+    public function getIconAttributes(): array
+    {
+        return $this->iconAttributes;
     }
 
     public function getToggleIcon(): string
@@ -265,6 +289,11 @@ class DefaultItem implements Item, Serializable
     public function getNewTab(): bool
     {
         return $this->newTab;
+    }
+
+    public function withSpa(): bool
+    {
+        return $this->spa;
     }
 
     public function getItemClass(): string

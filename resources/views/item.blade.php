@@ -10,13 +10,18 @@
             $item->getActiveClass() => $active,
             $item->getInactiveClass() => ! $active,
         ])
-        @if($item->getNewTab())target="_blank"@endif
+        @if($item->withSpa()) wire:navigate @endif
+        @if($item->getNewTab()) target="_blank" @endif
     >
         @if($item->getIcon() !== null)
             @if($item->iconSvg())
                 {!! $item->getIcon() !!}
             @else
-                @svg($item->getIcon(), $item->getIconClass())
+                {{ svg(
+                        name: $item->getIcon(),
+                        class: $item->getIconClass(),
+                        attributes: $item->getIconAttributes()
+                  ) }}
             @endif
         @endif
 

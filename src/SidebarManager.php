@@ -9,7 +9,7 @@ use Tekfolio\Sidebar\Exceptions\LogicException;
 use Tekfolio\Sidebar\Infrastructure\SidebarFlusher;
 use Tekfolio\Sidebar\Infrastructure\SidebarResolver;
 
-final class SidebarManager
+class SidebarManager
 {
     protected array $sidebars = [];
 

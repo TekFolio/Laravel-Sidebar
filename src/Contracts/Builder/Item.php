@@ -19,9 +19,15 @@ interface Item extends Authorizable, Itemable, Routeable
 
     public function getIcon(): ?string;
 
-    public function setIcon(string $icon, string $type = 'blade', string $iconClass = ''): self;
+    public function isActive(): bool;
+
+    public function useSpa(): self;
+
+    public function setIcon(string $icon, string $type = 'blade', string $iconClass = '', array $attributes = []): self;
 
     public function getIconClass(): string;
+
+    public function getIconAttributes(): array;
 
     public function getToggleIcon(): string;
 
@@ -43,7 +49,7 @@ interface Item extends Authorizable, Itemable, Routeable
 
     public function setUrl(string $url): self;
 
-    public function route(array|string $route, array $params = []): self;
+    public function route(array | string $route, array $params = []): self;
 
     public function badge(mixed $callbackOrValue = null, ?string $className = null): Badge;
 
@@ -64,6 +70,8 @@ interface Item extends Authorizable, Itemable, Routeable
     public function isNewTab(bool $newTab): self;
 
     public function getNewTab(): bool;
+
+    public function withSpa(): bool;
 
     public function getItemClass(): string;
 
